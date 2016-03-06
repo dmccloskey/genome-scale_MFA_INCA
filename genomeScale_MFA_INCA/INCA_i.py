@@ -71,9 +71,7 @@ class inca_i():
                     'fit_reltol':float(m['options'][0][0][0]['fit_reltol'][0][0][0]),
                     'fit_starts':float(m['options'][0][0][0]['fit_starts'][0][0][0]),
                     'fit_tau':float(m['options'][0][0][0]['fit_tau'][0][0][0]),
-                    'hpc_mcr':m['options'][0][0][0]['hpc_mcr'][0][0],
                     'hpc_on':bool(m['options'][0][0][0]['hpc_on'][0][0][0]),
-                    'hpc_serve':m['options'][0][0][0]['hpc_serve'][0][0],
                     'int_maxstep':float(m['options'][0][0][0]['int_maxstep'][0][0][0]),
                     'int_reltol':float(m['options'][0][0][0]['int_reltol'][0][0][0]),
                     'int_senstol':float(m['options'][0][0][0]['int_senstol'][0][0][0]),
@@ -88,7 +86,16 @@ class inca_i():
                     'sim_na':bool(m['options'][0][0][0]['sim_na'][0][0][0]),
                     'sim_sens':bool(m['options'][0][0][0]['sim_sens'][0][0][0]),
                     'sim_ss':bool(m['options'][0][0][0]['sim_ss'][0][0][0]),
-                    'sim_tunit':m['options'][0][0][0]['sim_tunit'][0][0]}
+                    'sim_tunit':m['options'][0][0][0]['sim_tunit'][0][0]
+                    };
+        if 'hpc_mcr' in m['options'][0][0][0]:
+            m_options['hpc_mcr']=m['options'][0][0][0]['hpc_mcr'][0][0] #deprecated in INCA1.4
+        else:
+            m_options['hpc_mcr']=float(m['options'][0][0][0]['hpc_bg'][0][0][0])
+        if 'hpc_serve' in m['options'][0][0][0]:
+            m_options['hpc_serve']=m['options'][0][0][0]['hpc_serve'][0][0]#deprecated in INCA1.4
+        else:
+            m_options['hpc_serve']=m['options'][0][0][0]['hpc_sched'][0][0]
         simulationParameters = [];
         m_options.update({'simulation_id':simulation_id,
 		'simulation_dateAndTime':simulation_dateAndTime,
