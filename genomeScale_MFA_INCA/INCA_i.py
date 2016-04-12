@@ -88,14 +88,20 @@ class inca_i():
                     'sim_ss':bool(m['options'][0][0][0]['sim_ss'][0][0][0]),
                     'sim_tunit':m['options'][0][0][0]['sim_tunit'][0][0]
                     };
-        if 'hpc_mcr' in m['options'][0][0][0]:
-            m_options['hpc_mcr']=m['options'][0][0][0]['hpc_mcr'][0][0] #deprecated in INCA1.4
-        else:
+        try: m_options['hpc_mcr']=m['options'][0][0][0]['hpc_mcr'][0][0] #deprecated in INCA1.4
+        except Exception as e:
             m_options['hpc_mcr']=float(m['options'][0][0][0]['hpc_bg'][0][0][0])
-        if 'hpc_serve' in m['options'][0][0][0]:
-            m_options['hpc_serve']=m['options'][0][0][0]['hpc_serve'][0][0]#deprecated in INCA1.4
-        else:
+        try: m_options['hpc_serve']=m['options'][0][0][0]['hpc_serve'][0][0]#deprecated in INCA1.4
+        except Exception as e:
             m_options['hpc_serve']=m['options'][0][0][0]['hpc_sched'][0][0]
+        #if 'hpc_mcr' in m['options'][0][0][0]:
+        #    m_options['hpc_mcr']=m['options'][0][0][0]['hpc_mcr'][0][0] #deprecated in INCA1.4
+        #else:
+        #    m_options['hpc_mcr']=float(m['options'][0][0][0]['hpc_bg'][0][0][0])
+        #if 'hpc_serve' in m['options'][0][0][0]:
+        #    m_options['hpc_serve']=m['options'][0][0][0]['hpc_serve'][0][0]#deprecated in INCA1.4
+        #else:
+        #    m_options['hpc_serve']=m['options'][0][0][0]['hpc_sched'][0][0]
         simulationParameters = [];
         m_options.update({'simulation_id':simulation_id,
 		'simulation_dateAndTime':simulation_dateAndTime,
@@ -335,9 +341,11 @@ class inca_i():
         for d in f['par'][0][0][0]['val']:
             if not d:
                 f_par_val.append(0.0)
-            elif isnan(d[0][0]) or d[0][0]<1.0e-6:
+            #elif isnan(d[0][0]) or d[0][0]<1.0e-6:
+            elif isnan(d[0][0]):
                 f_par_val.append(0.0)
-            elif isinf(d[0][0]) or d[0][0]>1e3:
+            #elif isinf(d[0][0]) or d[0][0]>1e3:
+            elif isinf(d[0][0]):
                 f_par_val.append(1.0e3)
             else:
                 f_par_val.append(float(d[0][0]))
@@ -354,14 +362,16 @@ class inca_i():
         for cnt,d in enumerate(f['par'][0][0][0]['lb']):
             if not d:
                 f_par_lb.append(0.0)
-            elif isnan(d[0][0]) or d[0][0]<1.0e-6:
+            #elif isnan(d[0][0]) or d[0][0]<1.0e-6:
+            elif isnan(d[0][0]):
                 f_par_lb.append(0.0)
             else:
                 f_par_lb.append(float(d[0][0]))
         for d in f['par'][0][0][0]['ub']:
             if not d:
                 f_par_ub.append(1.0e3)
-            elif isinf(d[0][0]) or isnan(d[0][0]) or d[0][0]>1.0e3:
+            #elif isinf(d[0][0]) or isnan(d[0][0]) or d[0][0]>1.0e3:
+            elif isinf(d[0][0]) or isnan(d[0][0]):
                 f_par_ub.append(1.0e3)
             else:
                 f_par_ub.append(float(d[0][0]))
